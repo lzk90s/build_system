@@ -80,7 +80,7 @@ $(call assert-equal, \
 	$(wildcard $(HEADER_EXPORT_FILE)), \
 	header file not exist! \
 )
-$(info $(a))
+
 $(foreach itr, $(call list-get-itr-set, $(IMPORT_LIST)), \
 	$(eval id:=$(call list-get-val-by-itr, $(IMPORT_LIST), $(itr))) \
 	$(eval _import_names:=$(call mod-get-import-headers, $(id))) \
