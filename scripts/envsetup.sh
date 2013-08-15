@@ -68,7 +68,7 @@ function mmm()
     ONE_SHOT_MAKEFILE=${mfile} make -C ${T} ${ARGS}
 }
 
-function gmv()
+function gm()
 {
 	local T=$(find_project_root)
 	local p=`pwd`
