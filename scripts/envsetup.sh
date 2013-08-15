@@ -81,6 +81,3 @@ PROJECT_TOP_DIR=$(find_project_root)
 
 
 export PROJECT_TOP_DIR
-
-alias gm="generate_module_mk"
-alias gmv="generate_module_mk && vim module.mk"
