@@ -6,7 +6,6 @@
 
 $(call assert-not-null, $(LOCAL_PATH), LOCAL_PATH is null)
 
-LOCAL_PATH:=
 LOCAL_MODULE           :=
 LOCAL_MODULE_OWNER     :=
 
