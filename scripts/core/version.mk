@@ -1,10 +1,13 @@
-##--------------------------------------------------------------------------
-##
-#        文件：version.mk
-#        描述：版本信息
-#        修改：2013-6-11
+#	
+#	file : version.mk
+#	description: version for makefile
 #
-##--------------------------------------------------------------------------
+#
 
+BUILD_SYSTEM_VERSION:=0.0.2
 
-BUILD_SYSTEM_VERSION:=0.0.1
+define get-system-version
+$(strip \
+	$(BUILD_SYSTEM_VERSION) \
+)
+endef

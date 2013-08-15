@@ -1,34 +1,35 @@
-##--------------------------------------------------------------------------
-##
-#        文件：target_binary.mk
-#        描述：
-#        修改：2013-5-31
 #
-##--------------------------------------------------------------------------
+#	file : binary.mk
+#	description: host shared library
+#
+
 
 $(call assert-not-null, $(LOCAL_PATH))
 
+_ipath:=$(call mod-get-intermediate-path, $(MOBJ))
+_spath:=$(call mod-get-source-path, $(MOBJ))
+
 ##    %.o : %.c
-$(MODULE.$(curr_module_id).MODULE_PATH.INTERMEDIATE_PATH)/%.o:$(MODULE.$(curr_module_id).MODULE_PATH.SOURCE_PATH)/%.c
-	$(call transform-c-to-object)
+$(_ipath)/%.o:$(_spath)/%.c
+	$(call mod-trans-c-to-obj)
 
 ##    %.o : %.cpp
-$(MODULE.$(curr_module_id).MODULE_PATH.INTERMEDIATE_PATH)/%.o:$(MODULE.$(curr_module_id).MODULE_PATH.SOURCE_PATH)/%.cpp
-	$(call transform-cxx-to-object)
+$(_ipath)/%.o:$(_spath)/%.cpp
+	$(call mod-trans-cxx-to-obj)
 
 ##    %.o : %.cxx
-$(MODULE.$(curr_module_id).MODULE_PATH.INTERMEDIATE_PATH)/%.o:$(MODULE.$(curr_module_id).MODULE_PATH.SOURCE_PATH)/%.cxx
-	$(call transform-cxx-to-object)
+$(_ipath)/%.o:$(_spath)/%.cxx
+	$(call mod-trans-cxx-to-obj)
     
 ##    %.o : %.cc
-$(MODULE.$(curr_module_id).MODULE_PATH.INTERMEDIATE_PATH)/%.o:$(MODULE.$(curr_module_id).MODULE_PATH.SOURCE_PATH)/%.cc
-	$(call transform-cxx-to-object)
+$(_ipath)/%.o:$(_spath)/%.cc
+	$(call mod-trans-cxx-to-obj)
     
 
-sinclude $(addprefix $(MODULE.$(curr_module_id).MODULE_PATH.INTERMEDIATE_PATH)/, $(patsubst %.c, %.d, $(filter %.c, $(LOCAL_SRC_FILES))))
-sinclude $(addprefix $(MODULE.$(curr_module_id).MODULE_PATH.INTERMEDIATE_PATH)/, $(patsubst %.cpp, %.d, $(filter %.cpp, $(LOCAL_SRC_FILES))))
-sinclude $(addprefix $(MODULE.$(curr_module_id).MODULE_PATH.INTERMEDIATE_PATH)/, $(patsubst %.cxx, %.d, $(filter %.cxx, $(LOCAL_SRC_FILES))))
-sinclude $(addprefix $(MODULE.$(curr_module_id).MODULE_PATH.INTERMEDIATE_PATH)/, $(patsubst %.cc, %.d, $(filter %.cc, $(LOCAL_SRC_FILES))))
+sinclude $(addprefix $(_ipath)/, $(patsubst %.c, %.d, $(filter %.c, $(LOCAL_SRC_FILES))))
+sinclude $(addprefix $(_ipath)/, $(patsubst %.cpp, %.d, $(filter %.cpp, $(LOCAL_SRC_FILES))))
+sinclude $(addprefix $(_ipath)/, $(patsubst %.cxx, %.d, $(filter %.cxx, $(LOCAL_SRC_FILES))))
+sinclude $(addprefix $(_ipath)/, $(patsubst %.cc, %.d, $(filter %.cc, $(LOCAL_SRC_FILES))))
 
 
-LOCAL_INTERMEDIATE_TARGETS +=  $(MODULE.$(curr_module_id).MODULE_FILE.OBJ_FILES)
+___TARGETS +=$(call mod-get-objs, $(MOBJ))

@@ -1,40 +1,26 @@
-##--------------------------------------------------------------------------
-##
-#        文件：config.mk
-#        描述：Makefile变量配置
-#        修改：2013-5-31
-#        注意：
-#            1. 本文件里的配置信息，最好不要修改，如果想修改，请添加到自己的config.mk中
-##--------------------------------------------------------------------------
+#
+#   file : config.mk
+#   description: configuration for makefile
+#
 
-##    global build ways
+DISABLE_DEBUG:=FALSE
+
+##    build template
 CLEAR_VARS                    :=$(BUILD_SYSTEM_TOP_DIR)/build/clear_vars.mk
-BUILD_HOST_STATIC_LIBRARY     :=$(BUILD_SYSTEM_TOP_DIR)/build/build_host_static_library.mk
-BUILD_HOST_SHARED_LIBRARY     :=$(BUILD_SYSTEM_TOP_DIR)/build/build_host_shared_library.mk
-BUILD_HOST_EXECUTABLE         :=$(BUILD_SYSTEM_TOP_DIR)/build/build_host_executable.mk
-BUILD_TARGET_STATIC_LIBRARY   :=$(BUILD_SYSTEM_TOP_DIR)/build/build_target_static_library.mk
-BUILD_TARGET_SHARED_LIBRARY   :=$(BUILD_SYSTEM_TOP_DIR)/build/build_target_shared_library.mk
-BUILD_TARGET_EXECUTABLE       :=$(BUILD_SYSTEM_TOP_DIR)/build/build_target_executable.mk
+BUILD_HOST_STATIC_LIBRARY     :=$(BUILD_SYSTEM_TOP_DIR)/build/host_static_library.mk
+BUILD_HOST_SHARED_LIBRARY     :=$(BUILD_SYSTEM_TOP_DIR)/build/host_shared_library.mk
+BUILD_HOST_EXECUTABLE         :=$(BUILD_SYSTEM_TOP_DIR)/build/host_executable.mk
+BUILD_TARGET_STATIC_LIBRARY   :=$(BUILD_SYSTEM_TOP_DIR)/build/target_static_library.mk
+BUILD_TARGET_SHARED_LIBRARY   :=$(BUILD_SYSTEM_TOP_DIR)/build/target_shared_library.mk
+BUILD_TARGET_EXECUTABLE       :=$(BUILD_SYSTEM_TOP_DIR)/build/target_executable.mk
 
 
 ##    directory configuration
-PROJECT_DEFAULT_OUT           :=$(PROJECT_TOP_DIR)/out
-PROJECT_DEFAULT_VERSION       :=0.0.0
-PROJECT_DEFAULT_BUILD_ID      :=0000
-PROJECT_DEFAULT_BUILD_TYPE    :=debug
-PROJECT_DEFAULT_COMPANY       :=none
-PROJECT_DEFAULT_MODULE_OWNER  :=none 
-
-##    import user's own config.mk
-##
-#    PROJECT_OUT    
-#    PROJECT_VERSION    
-#    PROJECT_BUILD_ID        
-#    PROJECT_BUILD_TYPE            
-#    PROJECT_COMPANY        
-#    PROJECT_MODULE_OWNER
-sinclude $(PROJECT_TOP_DIR)/config.mk
-
+DEFAULT_PROJECT_OUT           :=$(PROJECT_TOP_DIR)/out
+DEFAULT_PROJECT_VERSION       :=0.0.0
+DEFAULT_PROJECT_BUILD_ID      :=0000
+DEFAULT_PROJECT_BUILD_TYPE    :=debug
+DEFAULT_PROJECT_MODULE_OWNER  :=none 
 
 ##    tools
 DOXYGEN                    :=doxygen
@@ -51,48 +37,24 @@ RM                         :=rm -rf
 MKDIR                      :=mkdir -p
 CP                         :=cp -r
 LINT                       :=lint
+SHELL					   :=/bin/bash
 
+##    import user's own config.mk
+##
+#    PROJECT_OUT    
+#    PROJECT_VERSION    
+#    PROJECT_BUILD_ID        
+#    PROJECT_BUILD_TYPE            
+#    PROJECT_COMPANY        
+#    PROJECT_MODULE_OWNER
+sinclude $(PROJECT_TOP_DIR)/config.mk
 
-ifeq (x$(strip $(PROJECT_OUT)), x)
-$(info Use default PROJECT_OUT: $(PROJECT_DEFAULT_OUT))
-PROJECT_OUT            :=$(PROJECT_DEFAULT_OUT)
-endif
-PROJECT_OUT            :=$(PROJECT_OUT)
-
-ifeq (x$(strip $(PROJECT_VERSION)), x)
-$(info Use default PROJECT_VERSION: $(PROJECT_DEFAULT_VERSION))
-PROJECT_VERSION        :=$(PROJECT_DEFAULT_VERSION)
-endif
-PROJECT_VERSION        :=$(PROJECT_VERSION)
-
-ifeq (x$(strip $(PROJECT_BUILD_ID)), x)
-$(info Use default PROJECT_BUILD_ID: $(PROJECT_DEFAULT_BUILD_ID))
-PROJECT_BUILD_ID       :=$(PROJECT_DEFAULT_BUILD_ID)
-endif
-PROJECT_BUILD_ID       :=$(PROJECT_BUILD_ID)
-
-ifeq (x$(strip $(PROJECT_BUILD_TYPE)), x)
-$(info Use default PROJECT_BUILD_TYPE: $(PROJECT_DEFAULT_BUILD_TYPE))
-PROJECT_BUILD_TYPE     :=$(PROJECT_DEFAULT_BUILD_TYPE)
-endif
-ifneq ($(strip $(PROJECT_BUILD_TYPE)), debug)
-ifneq ($(strip $(PROJECT_BUILD_TYPE)), release)
-$(error PROJECT_BUILD_TYPE wrong, it must be [debug] or [release])
-endif
-endif
-PROJECT_BUILD_TYPE     :=$(PROJECT_BUILD_TYPE)
-
-ifeq (x$(strip $(PROJECT_COMPANY)), x)
-$(info Use default PROJECT_COMPANY: $(PROJECT_DEFAULT_COMPANY))
-PROJECT_COMPANY        :=$(PROJECT_DEFAULT_COMPANY)
-endif
-PROJECT_COMPANY        :=$(PROJECT_COMPANY)
-
-ifeq (x$(strip $(PROJECT_MODULE_OWNER)), x)
-$(info Use default PROJECT_MODULE_OWNER: $(PROJECT_DEFAULT_MODULE_OWNER))
-PROJECT_MODULE_OWNER   :=$(PROJECT_DEFAULT_MODULE_OWNER)
-endif
-PROJECT_MODULE_OWNER   :=$(PROJECT_MODULE_OWNER)
+PROJECT_OUT:=$(if $(strip $(PROJECT_OUT)),$(PROJECT_OUT),$(DEFAULT_PROJECT_OUT))
+PROJECT_VERSION:=$(if $(strip $(PROJECT_VERSION)),$(PROJECT_VERSION),$(DEFAULT_PROJECT_VERSION))
+PROJECT_BUILD_ID:=$(if $(strip $(PROJECT_BUILD_ID)),$(PROJECT_BUILD_ID),$(DEFAULT_PROJECT_BUILD_ID))
+PROJECT_BUILD_TYPE:=$(if $(strip $(PROJECT_BUILD_TYPE)),$(PROJECT_BUILD_TYPE),$(DEFAULT_PROJECT_BUILD_TYPE))
+PROJECT_MODULE_OWNER:=$(if $(strip $(PROJECT_MODULE_OWNER)),$(PROJECT_MODULE_OWNER),$(DEFAULT_PROJECT_MODULE_OWNER))
+HEADER_EXPORT_FILE:=$(strip $(PROJECT_OUT))/header.list
 
 ## output directory
 PROJECT_OUTPUT_TOP_DIR :=$(PROJECT_OUT)/$(PROJECT_VERSION)-$(PROJECT_BUILD_ID)-$(PROJECT_BUILD_TYPE)
@@ -116,7 +78,7 @@ TARGET_OUT_HEADERS              :=$(TARGET_OUT_INTERMEDIATES)/include
 TARGET_OUT_INTERMEDIATE_LIBRARIES :=$(TARGET_OUT_INTERMEDIATES)/lib
 
 
-##    global common cflags
+##
 ifeq ($(PROJECT_BUILD_TYPE), debug)
 GLOBAL_CFLAGS                :=-DDEBUG -D__DEBUG__ -g
 GLOBAL_CXXFLAGS              :=-DDEBUG -D__DEBUG__ -g

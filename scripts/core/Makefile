@@ -1,20 +1,18 @@
-##--------------------------------------------------------------------------
-##
-#		文件：Makefile
-#		描述：Makefile扩展文件，可以添加其他规则
-#		修改：2013-5-31
+#	
+#	file : Makefile
+#	description:
 #
-##--------------------------------------------------------------------------
+#
 
 ##	system target
-.PHONY: main clean distclean
+.PHONY: main install all_modules
 
-main: $(LIST.TARGET_ALL)
+main: all_modules
 
-clean: $(LIST.TARGET_CLEAN)
+ALL_TASK:=$(foreach i, $(call list-get-itr-set, $(TASK_LIST)), \
+	$(call list-get-val-by-itr, $(TASK_LIST), $(i)) \
+)
+all_modules: $(ALL_TASK)
 
-distclean:
-	$(RM) $(PROJECT_OUTPUT_TOP_DIR)
-	
 install:
 	@echo "no support for this now !"
