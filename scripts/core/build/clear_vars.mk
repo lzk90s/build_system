@@ -1,6 +1,6 @@
 #
-#	file : clear_vars.mk
-#	description: clear variables
+#    file : clear_vars.mk
+#    description: clear variables
 #
 
 
@@ -24,7 +24,7 @@ LOCAL_LD:=
 LOCAL_INCLUDE_DIRS     :=
 LOCAL_LIBRARY_DIRS     :=
 
-LOCAL_EXPORT_HEADER_TO	 :=
+LOCAL_EXPORT_HEADER_TO   :=
 LOCAL_EXPORT_HEADER_DIRS :=
 
 LOCAL_STATIC_LIBRARIES :=

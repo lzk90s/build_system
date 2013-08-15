@@ -9,8 +9,8 @@
 
 main: all_modules
 
-ALL_TASK:=$(foreach i, $(call list-get-itr-set, $(TASK_LIST)), \
-	$(call list-get-val-by-itr, $(TASK_LIST), $(i)) \
+ALL_TASK:=$(foreach itr, $(call list-get-itr-set, $(TASK_LIST)), \
+	$(call list-get-val-by-itr, $(TASK_LIST), $(itr)) \
 )
 all_modules: $(ALL_TASK)
 

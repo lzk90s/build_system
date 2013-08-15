@@ -1,6 +1,6 @@
 #
-#	file : main.mk
-#	description: main framework
+#    file : main.mk
+#    description: main framework
 #
 #
 
@@ -52,11 +52,11 @@ sinclude $(all_modules)
 # deal with dependence
 ifneq (xTRUE, x$(strip $(DISABLE_AUTO_DEPS)))
 $(foreach itr, $(call list-get-itr-set, $(DEPEND_LIST)), \
-	$(eval id:=$(call list-get-val-by-itr, $(DEPEND_LIST), $(itr))) \
-	$(eval _target:=$(call mod-get-target-entry, $(id))) \
-	$(eval _dep_ids:=$(call mod-get-deps, $(id))) \
-	$(eval _deps:=$(foreach i, $(_dep_ids), $(call mod-get-target-entry, $(i)))) \
-	$(eval $(call add-depends,$(_target),$(_deps))) \
+    $(eval id:=$(call list-get-val-by-itr, $(DEPEND_LIST), $(itr))) \
+    $(eval _target:=$(call mod-get-target-entry, $(id))) \
+    $(eval _dep_ids:=$(call mod-get-deps, $(id))) \
+    $(eval _deps:=$(foreach i, $(_dep_ids), $(call mod-get-target-entry, $(i)))) \
+    $(eval $(call add-depends,$(_target),$(_deps))) \
 )
 endif
 
@@ -64,10 +64,10 @@ endif
 # deal with header export
 ifeq (x, x$(strip $(ONE_SHOT_MAKEFILE)))
 $(foreach itr, $(call list-get-itr-set, $(EXPORT_LIST)), \
-	$(eval id:=$(call list-get-val-by-itr, $(EXPORT_LIST), $(itr))) \
-	$(eval _export_name:=$(call mod-get-export-header, $(id))) \
-	$(eval _export_dirs:=$(call mod-get-export-dirs, $(id))) \
-	$(call map-append, $(HEADER_MAP), $(_export_name), $(_export_dirs)) \
+    $(eval id:=$(call list-get-val-by-itr, $(EXPORT_LIST), $(itr))) \
+    $(eval _export_name:=$(call mod-get-export-header, $(id))) \
+    $(eval _export_dirs:=$(call mod-get-export-dirs, $(id))) \
+    $(call map-append, $(HEADER_MAP), $(_export_name), $(_export_dirs)) \
 )
 endif
 
@@ -76,30 +76,30 @@ endif
 ifneq (x, x$(strip $(ONE_SHOT_MAKEFILE)))
 # if the file not exist, run make for the first time
 $(call assert-equal, \
-	$(HEADER_EXPORT_FILE), \
-	$(wildcard $(HEADER_EXPORT_FILE)), \
-	header file not exist! \
+    $(HEADER_EXPORT_FILE), \
+    $(wildcard $(HEADER_EXPORT_FILE)), \
+    header file not exist! \
 )
 
 $(foreach itr, $(call list-get-itr-set, $(IMPORT_LIST)), \
-	$(eval id:=$(call list-get-val-by-itr, $(IMPORT_LIST), $(itr))) \
-	$(eval _import_names:=$(call mod-get-import-headers, $(id))) \
-	$(foreach n, $(_import_names), \
-		$(eval _dirs:=$(shell \grep "$(n)" $(HEADER_EXPORT_FILE) | cut -d':' -f2)) \
-		$(call map-append, $(HEADER_MAP), $(n), $(_dirs)) \
-	) \
+    $(eval id:=$(call list-get-val-by-itr, $(IMPORT_LIST), $(itr))) \
+    $(eval _import_names:=$(call mod-get-import-headers, $(id))) \
+    $(foreach n, $(_import_names), \
+        $(eval _dirs:=$(shell \grep "$(n)" $(HEADER_EXPORT_FILE) | cut -d':' -f2)) \
+        $(call map-append, $(HEADER_MAP), $(n), $(_dirs)) \
+    ) \
 )
 endif
 
 # deal with header import
 $(foreach itr, $(call list-get-itr-set, $(IMPORT_LIST)), \
-	$(eval id:=$(call list-get-val-by-itr, $(IMPORT_LIST), $(itr))) \
-	$(eval _import_names:=$(call mod-get-import-headers, $(id))) \
-	$(eval _all_dirs:=$(foreach n, $(_import_names), $(call map-get-val-by-key, $(HEADER_MAP), $(n)))) \
-	$(eval _d:=$(sort $(call mod-get-inc-dirs, $(id)) $(_all_dirs))) \
-	$(call mod-set-inc-dirs, $(id), $(_d)) \
+    $(eval id:=$(call list-get-val-by-itr, $(IMPORT_LIST), $(itr))) \
+    $(eval _import_names:=$(call mod-get-import-headers, $(id))) \
+    $(eval _all_dirs:=$(foreach n, $(_import_names), $(call map-get-val-by-key, $(HEADER_MAP), $(n)))) \
+    $(eval _d:=$(sort $(call mod-get-inc-dirs, $(id)) $(_all_dirs))) \
+    $(call mod-set-inc-dirs, $(id), $(_d)) \
 )
-		
+        
 # bring in other target
 include $(BUILD_SYSTEM_TOP_DIR)/Makefile
 

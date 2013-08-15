@@ -37,7 +37,7 @@ RM                         :=rm -rf
 MKDIR                      :=mkdir -p
 CP                         :=cp -r
 LINT                       :=lint
-SHELL					   :=/bin/bash
+SHELL                      :=/bin/bash
 
 ##    import user's own config.mk
 ##

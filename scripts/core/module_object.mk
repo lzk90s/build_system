@@ -1,17 +1,17 @@
 #
-#	file: module_object.mk
-#	description: object of each module
+#    file: module_object.mk
+#    description: object of each module
 #
 
 $(call assert-not-null, $(LOCAL_PATH), LOCAL_PATH is null)
 $(call assert-not-null, $(LOCAL_MODULE), LOCAL_MODULE is null)
 $(call assert-not-null, $(LOCAL_MODULE_CLASS), LOCAL_MODULE_CLASS is null)
 
-curr_mpath	:=$(strip $(LOCAL_PATH))
-curr_mclass	:=$(strip $(LOCAL_MODULE_CLASS))
-curr_mname	:=$(call normalize-name)
-my_prefix	:=$(call get-prefix)
-curr_mid	:=$(call generate-mid, $(curr_mclass), $(curr_mname))
+curr_mpath   :=$(strip $(LOCAL_PATH))
+curr_mclass  :=$(strip $(LOCAL_MODULE_CLASS))
+curr_mname   :=$(call normalize-name)
+my_prefix    :=$(call get-prefix)
+curr_mid     :=$(call generate-mid, $(curr_mclass), $(curr_mname))
 
 # module
 MOBJ:=$(curr_mid)
@@ -78,8 +78,8 @@ $(call mod-set-static-libs, $(MOBJ), $(_static_libs))
 _abs_inc:=$(call filter-absolute-paths, $(LOCAL_INCLUDE_DIRS))
 _non_abs_inc:=$(filter-out $(_abs_inc), $(LOCAL_INCLUDE_DIRS))
 ifneq (x, x$(strip $(_non_abs_inc)))
-  $(call mod-set-import-headers, $(MOBJ), $(_non_abs_inc))
-  $(call list-append, $(IMPORT_LIST), $(curr_mid))
+    $(call mod-set-import-headers, $(MOBJ), $(_non_abs_inc))
+    $(call list-append, $(IMPORT_LIST), $(curr_mid))
 endif
 $(call mod-set-inc-dirs, $(MOBJ), $(_abs_inc))
 
@@ -90,11 +90,11 @@ $(call mod-set-lib-dirs, $(MOBJ), $(LOCAL_LIBRARY_DIRS))
 _export_dirs:=$(LOCAL_EXPORT_HEADER_DIRS)
 _export_name:=$(LOCAL_EXPORT_HEADER_TO)
 ifneq (x, x$(strip $(_export_dirs)))
-  $(call assert-not-null, $(_export_name), LOCAL_EXPORT_HEADER_TO is null!)
-  $(call assert-equal, $(words $(_export_name)), 1, The name of header to be export must be single!)
-  $(call list-append, $(EXPORT_LIST), $(curr_mid))
-  $(call mod-set-export-header, $(MOBJ), $(_export_name))
-  $(call mod-set-export-dirs, $(MOBJ), $(_export_dirs))
+    $(call assert-not-null, $(_export_name), LOCAL_EXPORT_HEADER_TO is null!)
+    $(call assert-equal, $(words $(_export_name)), 1, The name of header to be export must be single!)
+    $(call list-append, $(EXPORT_LIST), $(curr_mid))
+    $(call mod-set-export-header, $(MOBJ), $(_export_name))
+    $(call mod-set-export-dirs, $(MOBJ), $(_export_dirs))
 endif
 
 # add current module to task list for building
