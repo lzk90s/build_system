@@ -17,7 +17,7 @@ define mod-init
     $(eval $(this).class:=$(strip $(2))) \
     $(eval $(this).name:=$(strip $(3))) \
     $(eval $(this).path.source:=$(curr_mpath)) \
-    $(eval $(this).path.relative:=$(patsubst $(PROJECT_TOP_DIR)/%,%,$(curr_mpath))) \
+    $(eval $(this).path.relative:=$(call gen-relative-path)) \
     $(eval $(this).file.srcs:=$(foreach f, $(LOCAL_SRC_FILES), $(call normalize-srcs, $(f)))) \
     $(eval $(this).file.objs:= ) \
     $(eval $(this).id:=$(call generate-mid, $($(this).class), $($(this).name))) \
@@ -398,6 +398,15 @@ endef
 
 #********************************* private **********************************#
 $(PRIVATE)
+
+define gen-relative-path
+$(strip \
+    $(if $(call is-equal, $(PROJECT_TOP_DIR), $(curr_mpath)), \
+        ., \
+        $(patsubst $(PROJECT_TOP_DIR)/%,%,$(curr_mpath)) \
+     ) \
+)
+endef
 
 define update-objs
     $(eval _srcs:=$(call mod-get-srcs, $(MOBJ))) \

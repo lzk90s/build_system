@@ -75,11 +75,9 @@ endif
 # if build just one module, load the header from file
 ifneq (x, x$(strip $(ONE_SHOT_MAKEFILE)))
 # if the file not exist, run make for the first time
-$(call assert-equal, \
-    $(HEADER_EXPORT_FILE), \
-    $(wildcard $(HEADER_EXPORT_FILE)), \
-    header file not exist! \
-)
+ifneq ($(HEADER_EXPORT_FILE), $(wildcard $(HEADER_EXPORT_FILE)))
+    $(warning Warning: header file not exist, this may cause error!)
+endif
 
 $(foreach itr, $(call list-get-itr-set, $(IMPORT_LIST)), \
     $(eval id:=$(call list-get-val-by-itr, $(IMPORT_LIST), $(itr))) \
