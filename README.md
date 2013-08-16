@@ -54,12 +54,12 @@
         
         LOCAL_SRC_FILES        :=main.c
         
-        #LOCAL_CORSS_COMPILE   :=
-        #LOCAL_AR              :=$(LOCAL_CROSS_COMPILE)ar
-        #LOCAL_CC              :=$(LOCAL_CROSS_COMPILE)gcc
-        #LOCAL_CPP             :=$(LOCAL_CROSS_COMPILE)gcc
-        #LOCAL_CXX             :=$(LOCAL_CROSS_COMPILE)g++
-        #LOCAL_LD              :=$(LOCAL_CC)
+        LOCAL_CORSS_COMPILE   :=
+        LOCAL_AR              :=$(LOCAL_CROSS_COMPILE)ar
+        LOCAL_CC              :=$(LOCAL_CROSS_COMPILE)gcc
+        LOCAL_CPP             :=$(LOCAL_CROSS_COMPILE)gcc
+        LOCAL_CXX             :=$(LOCAL_CROSS_COMPILE)g++
+        LOCAL_LD              :=$(LOCAL_CC)
         
         LOCAL_INCLUDE_DIRS     :=
         LOCAL_LIBRARY_DIRS     :=
