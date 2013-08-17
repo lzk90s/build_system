@@ -50,7 +50,6 @@ function m()
     else
         echo "Couldn't locate the top of the tree.  Try setting TOP."
     fi
-    make -C ${T} $@
 }
 
 PROJECT_OUT_TOP_DIR=${PROJECT_TOP_DIR}/out
