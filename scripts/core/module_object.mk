@@ -3,112 +3,142 @@
 #    description: object of each module
 #
 
-$(call assert-not-null, $(LOCAL_PATH), LOCAL_PATH is null)
-$(call assert-not-null, $(LOCAL_MODULE), LOCAL_MODULE is null)
-$(call assert-not-null, $(LOCAL_MODULE_CLASS), LOCAL_MODULE_CLASS is null)
+$(call AssertNotNull, $(LOCAL_PATH), LOCAL_PATH is null)
+$(call AssertNotNull, $(LOCAL_MODULE), LOCAL_MODULE is null)
+$(call AssertNotNull, $(LOCAL_MODULE_CLASS), LOCAL_MODULE_CLASS is null)
+
+
 
 curr_mpath   :=$(strip $(LOCAL_PATH))
 curr_mclass  :=$(strip $(LOCAL_MODULE_CLASS))
-curr_mname   :=$(call normalize-name)
-my_prefix    :=$(call get-prefix)
-curr_mid     :=$(call generate-mid, $(curr_mclass), $(curr_mname))
+curr_mname   :=$(call FormatName)
+my_prefix    :=$(call GetPrefix)
+curr_mid     :=
+tmp          :=
 
-# module
-MOBJ:=$(curr_mid)
-$(call mod-init, $(MOBJ), $(curr_mclass), $(curr_mname))
+
+# New Module Object
+MODULE:=$(call MOD_New, $(curr_mclass), $(curr_mname))
+
+
+curr_mid	 :=$(call MOD_GetID, $(MODULE))
+
 
 # check duplicated module
-$(call dup-check)
+$(call DupModCheck)
+
 
 # set intermediate path
-_itpath:=$(addprefix $($(my_prefix)OUT_INTERMEDIATES)/, $(call mod-get-relative-path, $(MOBJ)))
-$(call mod-set-intermediate-path, $(MOBJ), $(_itpath))
+tmp:=$(addprefix $($(my_prefix)OUT_INTERMEDIATES)/, $(call MOD_GetRelativePath, $(MODULE)))
+$(call MOD_SetInterPath, $(MODULE), $(tmp))
+
 
 # set install path
-_mispath:=$(call find-install-path)
-$(call mod-set-install-path, $(MOBJ), $(_mispath))
+tmp:=$(call MOD_GenModInstallPath)
+$(call MOD_SetInstallPath, $(MODULE), $(tmp))
+
 
 # set module owner
-_owner:=$(if $(LOCAL_MODULE_OWNER), $(LOCAL_MODULE_OWNER), $(PROJECT_MODULE_OWNER))
-$(call mod-set-owner, $(MOBJ), $(_owner))
+tmp:=$(if $(LOCAL_MODULE_OWNER), $(LOCAL_MODULE_OWNER), $(PROJECT_MODULE_OWNER))
+$(call MOD_SetOwner, $(MODULE), $(tmp))
+
 
 # set archive tool
-_ar:=$(if $(LOCAL_AR), $(LOCAL_AR), $(AR))
-$(call mod-set-ar, $(MOBJ), $(_ar))
+tmp:=$(if $(LOCAL_AR), $(LOCAL_AR), $(AR))
+$(call MOD_SetARTool, $(MODULE), $(tmp))
+
 
 # set c compiler
-_cc:=$(if $(LOCAL_CC), $(LOCAL_CC), $(CC))
-$(call mod-set-cc, $(MOBJ), $(_cc))
+tmp:=$(if $(LOCAL_CC), $(LOCAL_CC), $(CC))
+$(call MOD_SetCCTool, $(MODULE), $(tmp))
+
 
 # set c++ compiler
-_cxx:=$(if $(LOCAL_CXX), $(LOCAL_CXX), $(CXX))
-$(call mod-set-cxx, $(MOBJ), $(_cxx))
+tmp:=$(if $(LOCAL_CXX), $(LOCAL_CXX), $(CXX))
+$(call MOD_SetCXXTool, $(MODULE), $(tmp))
+
 
 # set linker
-_ld:=$(if $(LOCAL_LD), $(LOCAL_LD), $(LD))
-$(call mod-set-ld, $(MOBJ), $(_ld))
+tmp:=$(if $(LOCAL_LD), $(LOCAL_LD), $(LD))
+$(call MOD_SetLinkTool, $(MODULE), $(tmp))
+
 
 # set CFLAGS
-_cflags:=$(GLOBAL_CFLAGS) $(LOCAL_CFLAGS) $(CFLAGS)
-$(call mod-set-cflags, $(MOBJ), $(_cflags))
+tmp:=$(GLOBAL_CFLAGS) $(LOCAL_CFLAGS) $(CFLAGS)
+$(call MOD_SetCFlags, $(MODULE), $(tmp))
+
 
 # set CXXFLAGS
-_cxxflags:=$(GLOBAL_CXXFLAGS) $(LOCAL_CXXFLAGS) $(CXXFLAGS)
-$(call mod-set-cxxflags, $(MOBJ), $(_cxxflags))
+tmp:=$(GLOBAL_CXXFLAGS) $(LOCAL_CXXFLAGS) $(CXXFLAGS)
+$(call MOD_SetCXXFlags, $(MODULE), $(tmp))
+
 
 # set LDFALGS
-_ldflags:=$(GLOBAL_LDFLAGS) $(LOCAL_LDFLAGS) $(LDFLAGS)
-$(call mod-set-ldflags, $(MOBJ), $(_ldflags))
+tmp:=$(GLOBAL_LDFLAGS) $(LOCAL_LDFLAGS) $(LDFLAGS)
+$(call MOD_SetLinkFlags, $(MODULE), $(tmp))
+
 
 # set archive libraries
-$(call mod-set-arlibs, $(MOBJ), $(LOCAL_ARLIBS))
+$(call MOD_SetARLibs, $(MODULE), $(LOCAL_ARLIBS))
+
 
 # set ld libs
-$(call mod-set-ldlibs, $(MOBJ), $(LOCAL_LDLIBS))
+$(call MOD_SetLDLibs, $(MODULE), $(LOCAL_LDLIBS))
+
 
 # set shared libraries, name only
-_shared_libs:=$(foreach l, $(LOCAL_SHARED_LIBRARIES), $(call normalize-shared-libs-to-xxx.so, $(l)))
-$(call mod-set-shared-libs, $(MOBJ), $(_shared_libs))
+tmp:=$(foreach l, $(LOCAL_SHARED_LIBRARIES), $(call NormSharedLib2Name.so, $(l)))
+tmp:=$(call NormSharedLib2AbsPath, $(tmp))
+$(call MOD_SetSharedLibs, $(MODULE), $(tmp))
+
 
 # set static libraries, absolute path only
-_static_libs:=$(foreach l, $(LOCAL_STATIC_LIBRARIES), $(call normalize-static-libs-to-xxx.a, $(l)))
-$(call mod-set-static-libs, $(MOBJ), $(_static_libs))
+tmp:=$(foreach l, $(LOCAL_STATIC_LIBRARIES), $(call NormStaticLib2Name.a, $(l)))
+tmp:=$(call NormStaticLib2AbsPath, $(tmp))
+$(call MOD_SetStaticLibs, $(MODULE), $(tmp))
+
 
 # set include directories
-_abs_inc:=$(call filter-absolute-paths, $(LOCAL_INCLUDE_DIRS))
-_non_abs_inc:=$(filter-out $(_abs_inc), $(LOCAL_INCLUDE_DIRS))
-ifneq (x, x$(strip $(_non_abs_inc)))
-    $(call mod-set-import-headers, $(MOBJ), $(_non_abs_inc))
-    $(call list-append, $(IMPORT_LIST), $(curr_mid))
+absIncDirs:=$(call FilterAbsPath, $(LOCAL_INCLUDE_DIRS))
+nonAbsIncNames:=$(filter-out $(absIncDirs), $(LOCAL_INCLUDE_DIRS))
+
+ifneq (x, x$(strip $(nonAbsIncNames)))
+    $(call MOD_SetImportHeaderNames, $(MODULE), $(nonAbsIncNames))
+    $(call SET_Append, $(SET_HeaderImport), $(curr_mid))
 endif
-$(call mod-set-inc-dirs, $(MOBJ), $(_abs_inc))
+$(call MOD_SetIncDirs, $(MODULE), $(absIncDirs))
+
 
 # set library directories
-$(call mod-set-lib-dirs, $(MOBJ), $(LOCAL_LIBRARY_DIRS))
+$(call MOD_SetLibDirs, $(MODULE), $(LOCAL_LIBRARY_DIRS))
+
 
 # export header directories
-_export_dirs:=$(LOCAL_EXPORT_HEADER_DIRS)
-_export_name:=$(LOCAL_EXPORT_HEADER_TO)
-ifneq (x, x$(strip $(_export_dirs)))
-    $(call assert-not-null, $(_export_name), LOCAL_EXPORT_HEADER_TO is null!)
-    $(call assert-equal, $(words $(_export_name)), 1, The name of header to be export must be single!)
-    $(call list-append, $(EXPORT_LIST), $(curr_mid))
-    $(call mod-set-export-header, $(MOBJ), $(_export_name))
-    $(call mod-set-export-dirs, $(MOBJ), $(_export_dirs))
+name:=$(word 1, $(LOCAL_EXPORT_HEADER_TO))
+dirs:=$(LOCAL_EXPORT_HEADER_DIRS)
+
+ifneq (x, x$(strip $(dirs)))
+    $(call AssertNotNull, $(name), LOCAL_EXPORT_HEADER_TO is null!)
+    $(call SET_Append, $(SET_HeaderExport), $(curr_mid))
+    $(call MOD_SetExportHeaderName, $(MODULE), $(name))
+    $(call MOD_SetExportHeaderDirs, $(MODULE), $(dirs))
 endif
 
+
 # add current module to task list for building
-_target:=$(call mod-get-target-entry, $(MOBJ))
-$(call list-append, $(TASK_LIST), $(_target))
+$(call SET_Append, $(SET_Task), $(curr_mid))
+
 
 # add current module to module list
-$(call list-append, $(MODULE_LIST), $(curr_mid))
+$(call SET_Append, $(SET_Module), $(curr_mid))
 
 
 # set the entry of module
-TARGET_ENTRY:=$(call mod-get-target-entry, $(MOBJ))
-DEPS:=$(call mod-get-intermediate-target, $(MOBJ)) $(call mod-get-ultimate-target, $(MOBJ))
-$(call add-depends, $(TARGET_ENTRY),$(DEPS))
+target:=$(curr_mid)
+deps:=$(call MOD_GetInterTarget, $(MODULE)) $(call MOD_GetUltimateTarget, $(MODULE))
 
 
-$(call mod-fini)
+$(call AddDepends, $(target),$(deps))
+
+
+$(call MOD_Delete)

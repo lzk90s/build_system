@@ -1,6 +1,6 @@
 ### module.mk
 
-LOCAL_PATH	        :=$(call my-dir)
+LOCAL_PATH	        :=$(call MyDir)
 
 LOCAL_MODULE		:=libfunc_a
 LOCAL_MODULE_OWNER	:=user_lib

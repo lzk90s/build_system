@@ -4,32 +4,32 @@
 #
 
 
-$(call assert-not-null, $(LOCAL_PATH))
+$(call AssertNotNull, $(LOCAL_PATH))
 
-_ipath:=$(call mod-get-intermediate-path, $(MOBJ))
-_spath:=$(call mod-get-source-path, $(MOBJ))
+interPath:=$(call MOD_GetInterPath, $(MODULE))
+srcPath:=$(call MOD_GetSourcePath, $(MODULE))
 
 ##    %.o : %.c
-$(_ipath)/%.o:$(_spath)/%.c
-	$(call mod-trans-c-to-obj)
+$(interPath)/%.o:$(srcPath)/%.c
+	$(call MOD_TransC2Obj)
 
 ##    %.o : %.cpp
-$(_ipath)/%.o:$(_spath)/%.cpp
-	$(call mod-trans-cxx-to-obj)
+$(interPath)/%.o:$(srcPath)/%.cpp
+	$(call MOD_TransCXX2Obj)
 
 ##    %.o : %.cxx
-$(_ipath)/%.o:$(_spath)/%.cxx
-	$(call mod-trans-cxx-to-obj)
+$(interPath)/%.o:$(srcPath)/%.cxx
+	$(call MOD_TransCXX2Obj)
     
 ##    %.o : %.cc
-$(_ipath)/%.o:$(_spath)/%.cc
-	$(call mod-trans-cxx-to-obj)
+$(interPath)/%.o:$(srcPath)/%.cc
+	$(call MOD_TransCXX2Obj)
     
 
-sinclude $(addprefix $(_ipath)/, $(patsubst %.c, %.d, $(filter %.c, $(LOCAL_SRC_FILES))))
-sinclude $(addprefix $(_ipath)/, $(patsubst %.cpp, %.d, $(filter %.cpp, $(LOCAL_SRC_FILES))))
-sinclude $(addprefix $(_ipath)/, $(patsubst %.cxx, %.d, $(filter %.cxx, $(LOCAL_SRC_FILES))))
-sinclude $(addprefix $(_ipath)/, $(patsubst %.cc, %.d, $(filter %.cc, $(LOCAL_SRC_FILES))))
+sinclude $(addprefix $(interPath)/, $(patsubst %.c, %.d, $(filter %.c, $(LOCAL_SRC_FILES))))
+sinclude $(addprefix $(interPath)/, $(patsubst %.cpp, %.d, $(filter %.cpp, $(LOCAL_SRC_FILES))))
+sinclude $(addprefix $(interPath)/, $(patsubst %.cxx, %.d, $(filter %.cxx, $(LOCAL_SRC_FILES))))
+sinclude $(addprefix $(interPath)/, $(patsubst %.cc, %.d, $(filter %.cc, $(LOCAL_SRC_FILES))))
 
 
-___TARGETS +=$(call mod-get-objs, $(MOBJ))
+___TARGETS +=$(call mod-get-objs, $(MODULE))

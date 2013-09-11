@@ -4,25 +4,22 @@
 #
 
 # name: LIST
-$(CLASS) $(MAP)
 
 $(PUBLIC)
 
+
 # initialize map
-define map-init
+define MAP_Init
     $(eval this:=$(strip $(1))) \
     $(eval $(this).key:= ) \
     $(eval $(this).value:= )
 endef
 
-# finalize map
-define map-fini
-endef
 
 # append key-value to map
 #    p2: key
 #    p3: value
-define map-append
+define MAP_Append
     $(eval this:=$(strip $(1))) \
     $(eval _key:=$(strip $(2))) \
     $(eval _val:=$(strip $(3))) \
@@ -31,31 +28,36 @@ define map-append
     $(eval $(this).map.$(_key).val:=$(_val))
 endef
 
-define map-count
+
+define MAP_Count
 $(strip \
     $(eval this:=$(strip $(1))) \
     $(words $($(this).map_list)) \
 )
 endef
 
-define map-clear
+
+define MAP_Clear
     $(eval this:=$(strip $(1))) \
     $(eval $(this).map_list:= )
 endef
 
-define map-remove
+
+define MAP_Remove
     $(eval this:=$(strip $(1))) \
     $(eval _tmp:=$(filter-out $(strip $(2)), $($(this).map_list))) \
     $(eval $(this).map_list:=$(_tmp))
 endef
 
-define map-get-val-by-key
+
+define MAP_GetValByKey
 $(strip \
     $(eval this:=$(strip $(1))) \
     $(eval _key:=$(strip $(2))) \
     $($(this).map.$(_key).val) \
 )
 endef
+
 
 
 $(PRIVATE)

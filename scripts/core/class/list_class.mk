@@ -4,67 +4,65 @@
 #
 
 # name: LIST
-$(CLASS) $(LIST)
-
 $(PUBLIC)
 
 # initialize list
-define list-init
+define LIST_Init
     $(eval this:=$(strip $(1))) \
     $(eval $(this).itr_set:= ) \
-    $(call map-init, $(this))
+    $(eval $(this).list:= )
 endef
 
-# finalize list
-define list-fini
-endef
 
 # append element to list
 #    p2: values
-define list-append
+define LIST_Append
     $(eval this:=$(strip $(1))) \
-    $(eval _new:=$(strip $(shell expr $(call list-count, $(this)) + 1))) \
+    $(eval _new:=$(strip $(shell expr $(call LIST_Count, $(this)) + 1))) \
     $(eval $(this).itr_set:=$($(this).itr_set) $(_new)) \
-    $(call map-append, $(this), $(_new), $(2))
+    $(eval $(this).list.$(_new):=$(strip $(2)))
 endef
 
 
 # count the size of list
 #    r: size of list
-define list-count
+define LIST_Count
 $(strip \
     $(eval this:=$(strip $(1))) \
     $(words $(strip $($(this).itr_set))) \
 )
 endef
 
+
 # clear list
-define list-clear
+define LIST_Clear
     $(eval this:=$(strip $(1))) \
     $(eval $(this).itr_set:= )
 endef
 
+
 # element remove
 #    p2: element index
-define list-remove
+define LIST_Remove
     $(eval this:=$(strip $(1))) \
     $(eval _idx:=$(strip $(2))) \
     $(eval _tmp:=$(filter-out $(_idx), $($(this).itr_set))) \
-    $(eval $(this).itr_set:=$(_tmp)) \
-    $(call map-remove, $(this), $(_idx))
+    $(eval $(this).itr_set:=$(_tmp))
 endef
+
 
 # get element by index, index=[0,...,list-count-1]
 #    p2: index
-define list-get-val-by-itr
+define LIST_GetValByItr
 $(strip \
     $(eval this:=$(strip $(1))) \
-    $(eval _idx:=$(strip $(2))) \
-    $(call map-get-val-by-key, $(this), $(_idx))
+    $(eval _itr:=$(strip $(2))) \
+    $($(this).list.$(_itr))
 )
 endef
 
-define list-get-itr-set
+
+define LIST_GetItrSet
 $(strip \
     $(eval this:=$(strip $(1))) \
     $($(this).itr_set) \

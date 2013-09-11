@@ -6,7 +6,7 @@
 
 BUILD_SYSTEM_VERSION:=0.0.2
 
-define get-system-version
+define GetSystemVersion
 $(strip \
     $(BUILD_SYSTEM_VERSION) \
 )

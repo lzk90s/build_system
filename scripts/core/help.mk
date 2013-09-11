@@ -6,7 +6,7 @@
 
 .PHONY: help
 help:
-	@echo "build system : $(call get-system-version)"
+	@echo "build system : $(call GetSystemVersion)"
 	@echo
 	@echo "Common make targets:"
 	@echo "----------------------------------------------------------------------------------"

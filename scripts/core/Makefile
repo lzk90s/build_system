@@ -9,9 +9,7 @@
 
 main: all_modules
 
-ALL_TASK:=$(foreach itr, $(call list-get-itr-set, $(TASK_LIST)), \
-	$(call list-get-val-by-itr, $(TASK_LIST), $(itr)) \
-)
+ALL_TASK:=$(call SET_GetValSet, $(SET_Task))
 all_modules: $(ALL_TASK)
 
 install:
