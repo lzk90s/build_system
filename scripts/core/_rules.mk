@@ -20,6 +20,7 @@ $(___TARGETS): PRIVATE.INFO.CXXFLAGS:=$(strip \
     $(call MOD_GetCXXFlags, $(MODULE)) \
     $(addprefix -I, $(call MOD_GetIncDirs, $(MODULE))) \
 )
+
 $(___TARGETS): PRIVATE.INFO.LDFLAGS:=$(strip \
     $(call MOD_GetLinkFlags, $(MODULE)) \
     $(addprefix -, $(call MOD_GetLDLibs, $(MODULE))) \

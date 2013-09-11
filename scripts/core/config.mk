@@ -83,8 +83,8 @@ ifeq ($(PROJECT_BUILD_TYPE), debug)
 GLOBAL_CFLAGS                :=-DDEBUG -D__DEBUG__ -g
 GLOBAL_CXXFLAGS              :=-DDEBUG -D__DEBUG__ -g
 endif
-GLOBAL_CFLAGS                :=$(GLOBAL_CFLAGS) $(CFLAGS)
-GLOBAL_CXXFLAGS              :=$(GLOBAL_CFLAGS) $(CFLAGS)
+GLOBAL_CFLAGS                :=$(GLOBAL_CFLAGS) $(CFLAGS) -w
+GLOBAL_CXXFLAGS              :=$(GLOBAL_CFLAGS) $(CFLAGS) -w
 GLOBAL_ARFLAGS               :=rcs
 
 ##    file suffix
