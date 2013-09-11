@@ -653,9 +653,9 @@ define _TransO2SharedLib
 	-Wl,--whole-archive \
 	$(call NormStaticLib2LName, $(notdir $(PRIVATE.INFO.STATIC_LIBRARIES)))    \
 	-Wl,--no-whole-archive \
-	$(if $(PRIVATE.INFO.STATIC_LIBRARIES),-Wl, --start-group) \
-	$(call NormStaticLib2LName,$(notdir $(PRIVATE.INFO.STATIC_LIBRARIES))) \
-	$(if $(PRIVATE.INFO.SHARED_LIBRARIES),-Wl, --end-group) \
+	-Wl,--start-group \
+	$(call NormStaticLib2LName,$(notdir $(PRIVATE.INFO.STATIC_LIBRARIES)))  \
+	-Wl,--end-group \
 	$(call NormSharedLib2LName, $(notdir $(PRIVATE.INFO.SHARED_LIBRARIES))) \
 	$(filter %$(GLOBAL_OBJ_FILE_SUFFIX), $^) \
 	-o $@ 
@@ -669,9 +669,9 @@ define _TransO2Exe
 	-Wl,--whole-archive \
 	$(call NormStaticLib2LName, $(notdir $(PRIVATE.INFO.STATIC_LIBRARIES)))    \
 	-Wl,--no-whole-archive \
-	$(if $(PRIVATE.INFO.STATIC_LIBRARIES),-Wl, --start-group) \
+	-Wl,--start-group \
 	$(call NormStaticLib2LName,$(notdir $(PRIVATE.INFO.STATIC_LIBRARIES))) \
-	$(if $(PRIVATE.INFO.SHARED_LIBRARIES),-Wl, --end-group) \
+	-Wl,--end-group \
 	$(call NormSharedLib2LName, $(notdir $(PRIVATE.INFO.SHARED_LIBRARIES))) \
 	$(filter %$(GLOBAL_OBJ_FILE_SUFFIX), $^) \
 	-o $@ 
