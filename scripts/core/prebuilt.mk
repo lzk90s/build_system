@@ -3,7 +3,7 @@
 #
 
 include $(BUILD_SYSTEM_TOP_DIR)/version.mk
-include $(BUILD_SYSTEM_TOP_DIR)/Assert.mk
+include $(BUILD_SYSTEM_TOP_DIR)/assert.mk
 include $(BUILD_SYSTEM_TOP_DIR)/definitions.mk
 include $(BUILD_SYSTEM_TOP_DIR)/class/module_class.mk
 include $(BUILD_SYSTEM_TOP_DIR)/class/map_class.mk
