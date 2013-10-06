@@ -3,6 +3,8 @@
 #   description: private rules for makefile
 #
 
+
+$(___TARGETS): PRIVATE.ID:=$(call MOD_GetID, $(MODULE))
 $(___TARGETS): PRIVATE.PATH.RELATIVE:=$(call MOD_GetRelativePath, $(MODULE))
 $(___TARGETS): PRIVATE.PATH.INTERMEDIATE:=$(call MOD_GetInterPath, $(MODULE))
 $(___TARGETS): PRIVATE.PATH.INSTALL:=$(call MOD_GetInstallPath, $(MODULE))
@@ -23,7 +25,6 @@ $(___TARGETS): PRIVATE.INFO.CXXFLAGS:=$(strip \
 
 $(___TARGETS): PRIVATE.INFO.LDFLAGS:=$(strip \
     $(call MOD_GetLinkFlags, $(MODULE)) \
-    $(addprefix -, $(call MOD_GetLDLibs, $(MODULE))) \
     $(addprefix -L, /usr/lib /usr/local/lib) \
     $(addprefix -L, $(call MOD_GetLibDirs, $(MODULE))) \
     $(addprefix -L,$($(my_prefix)OUT_SHARED_LIBRARIES)) \

@@ -25,15 +25,12 @@ $(strip \
     $(eval $(this).path.source:=$(curr_mpath)) \
     $(eval $(this).path.relative:=$(call _GenRelativePath)) \
     $(eval $(this).file.srcs:=$(foreach f, $(LOCAL_SRC_FILES), $(call _NormalizeSrcFiles, $(f)))) \
-    $(eval DEP_LOCK:=DEP_LOCK) \
-    $(call lock-release, $(DEP_LOCK)) \
 	$(_id) \
 )
 endef
 
 
 define MOD_Delete
-    $(call lock-release, $(DEP_LOCK))
 endef
 
 
@@ -648,6 +645,7 @@ define _TransO2SharedLib
     $(hide)$(PRIVATE.INFO.LD) \
     $(PRIVATE.INFO.CFLAGS) $(PRIVATE.INFO.CXXFLAGS) \
     $(PRIVATE.INFO.LDFLAGS) \
+	$(addprefix -l, $(call MOD_GetLDLibs, $(PRIVATE.ID))) \
 	-Wl,-rpath-link=$($(my_prefix)OUT_SHARED_LIBRARIES) \
     -shared -Wl,-soname,$(notdir $@) \
 	-Wl,--whole-archive \
@@ -666,6 +664,7 @@ define _TransO2Exe
     $(hide)$(PRIVATE.INFO.LD) \
     $(PRIVATE.INFO.CFLAGS) $(PRIVATE.INFO.CXXFLAGS) \
     $(PRIVATE.INFO.LDFLAGS) \
+	$(addprefix -l, $(call MOD_GetLDLibs, $(PRIVATE.ID))) \
 	-Wl,--whole-archive \
 	$(call NormStaticLib2LName, $(notdir $(PRIVATE.INFO.STATIC_LIBRARIES)))    \
 	-Wl,--no-whole-archive \

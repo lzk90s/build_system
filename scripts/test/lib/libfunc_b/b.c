@@ -3,5 +3,5 @@
 
 void function_b()
 {
-	printf("this is function function_b()\n");
+    printf("this is function function_b()\n");
 }

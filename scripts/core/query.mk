@@ -23,7 +23,7 @@ endef
 MODULE_ID:=$(strip $(MODULE_ID))
 
 
-query_info:
+query_info:FORCE
 	$(call AssertNotNull, $(MODULE_ID), MODULE_ID is null)
 	$(call banner, ID:$(MODULE_ID))
 	$(hide)echo "ID                     =$(call MOD_GetID, $(MODULE_ID))"
@@ -48,6 +48,8 @@ query_info:
 	$(hide)echo "INFO.LDFLAGS           =$(call MOD_GetLinkFlags, $(MODULE_ID))"
 	$(hide)echo "INFO.INC_DIRS          =$(call MOD_GetIncDirs, $(MODULE_ID))"
 	$(hide)echo "info.LIB_DIRS          =$(call MOD_GetLibDris, $(MODULE_ID))"
+	$(hide)echo "info.ARLIBS            =$(call MOD_GetARLibs, $(MODULE_ID))"
+	$(hide)echo "info.LDLIBS            =$(call MOD_GetLDLibs, $(MODULE_ID))"
 	$(hide)echo "info.STATIC_LIBS       =$(call MOD_GetStaticLibs, $(MODULE_ID))"
 	$(hide)echo "info.SHARED_LIBS       =$(call MOD_GetSharedLibs, $(MODULE_ID))"
 	$(hide)echo ""

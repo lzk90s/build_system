@@ -4,5 +4,5 @@
 
 void function_c()
 {
-	printf("MAX(3, 4) : %d\n", MAX(3, 4));
+    printf("MAX(3, 4) : %d\n", MAX(3, 4));
 }

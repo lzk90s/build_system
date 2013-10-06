@@ -134,7 +134,7 @@ $(strip \
     $(eval _id:=$(call MOD_GetID, $(MODULE))) \
     $(eval count.$(_id):=$(shell expr $(count.$(_id)) + 1)) \
     $(if $(call IsEqual, $(count.$(_id)), 2), \
-        $(error Duplicated module : $(_id)), \
+        $(error Duplicated module : $(LOCAL_PATH)), \
      ) \
 )
 endef
