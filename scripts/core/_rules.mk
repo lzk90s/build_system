@@ -25,7 +25,6 @@ $(___TARGETS): PRIVATE.INFO.CXXFLAGS:=$(strip \
 
 $(___TARGETS): PRIVATE.INFO.LDFLAGS:=$(strip \
     $(call MOD_GetLinkFlags, $(MODULE)) \
-    $(addprefix -L, /usr/lib /usr/local/lib) \
     $(addprefix -L, $(call MOD_GetLibDirs, $(MODULE))) \
     $(addprefix -L,$($(my_prefix)OUT_SHARED_LIBRARIES)) \
     $(addprefix -L, $($(my_prefix)OUT_STATIC_LIBRARIES)) \
