@@ -218,3 +218,10 @@ $(strip \
 )
 endef
 
+define PrintInfoMsg
+    @echo -e "\e[36m$(1)\e[0m"
+endef
+
+define PrintErrorMsg
+    @echo -e "\e[31;1m$(1)\e[0m"
+endef
