@@ -38,4 +38,4 @@ LOCAL_LDFLAGS          :=
 #include $(BUILD_TARGET_STATIC_LIBRARY)
 #include $(BUILD_TARGET_SHARED_LIBRARY)
 
-#include $(CLEAR_VARS)
+include $(CLEAR_VARS)
