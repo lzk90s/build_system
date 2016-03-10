@@ -32,4 +32,4 @@ sinclude $(addprefix $(interPath)/, $(patsubst %.cxx, %.d, $(filter %.cxx, $(LOC
 sinclude $(addprefix $(interPath)/, $(patsubst %.cc, %.d, $(filter %.cc, $(LOCAL_SRC_FILES))))
 
 
-___TARGETS +=$(call mod-get-objs, $(MODULE))
+___TARGETS +=$(call MOD_GetObjFiles, $(MODULE))
